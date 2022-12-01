@@ -1,0 +1,43 @@
+.wrapper{
+    border-top: 03px solid green;
+}
+
+.wrapper a {
+    text-decoration: none;
+    color: green;
+
+}
+.nav-bar-side{
+    color: grey;
+    font-size: 16px;
+    margin-bottom: 3px;
+}
+a{
+    position: relative;
+    text-decoration: none;
+    padding:0 10px;
+    
+}
+
+a:after{
+    content:"";
+    color: Black;
+    background-color: green;
+    position: absolute;
+    height:3px;
+    width:0%;
+    left:0;
+    bottom:-5px;
+    transition: 0.3s;
+}
+
+a:hover{
+    color: Black;
+}
+
+
+a:hover::after{
+    width: 100%;
+    color: black;
+
+}
