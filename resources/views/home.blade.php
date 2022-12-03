@@ -105,20 +105,16 @@
               <div class="card">
                 <img class="card-img-top" height="320px" src="images/${data[i].image}">
                 <div class="card-body">
-                  <div class="d-flex justify-content-between">
-                    ${data[i].name ? '<h5 class="card-title">' + data[i].name + '</h5>' : ''}
+                  <div class="d-flex justify-content-between align-items-center">
+                    ${data[i].name ? '<h5 class="card-title" style="margin-bottom: 0">' + data[i].name + '</h5>' : ''}
                     <a data-bs-toggle="modal" data-bs-target="#modal${data[i].id}">
                       <i class="fa-solid fa-pencil"></i>
                     </a>
-                    <form id="deleteForm${data[i].id}">
-                      @csrf
-                      @method('DELETE')
-                      <a onclick="deleteImage(${data[i].id})">
-                        <i class="fa-solid fa-trash"></i>
-                      </a>
-                    </form>
+                    <a onclick="moveToTrash(${data[i].id})">
+                      <i class="fa-solid fa-trash"></i>
+                    </a>
                   </div>
-                  <div class="d-flex justify-content-between mt-3">
+                  <div class="d-flex justify-content-between span mt-3">
                     <a onclick="archive(${data[i].id})">
                       <i class="fa-solid fa-box-archive"></i>
                     </a>
@@ -128,7 +124,7 @@
                     <a onclick="share(${data[i].id})">
                       <i class="fa-solid fa-share"></i>
                     </a>
-                    <p style="font-size: 12px">${new Date(data[i].created_at).toLocaleString()}</p>
+                    <span style="font-size: 12px">${new Date(data[i].created_at).toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -249,7 +245,7 @@
       }
     }
 
-    function deleteImage(id){
+    function moveToTrash(id){
       // var form = document.getElementById('deleteForm' + id);
       $.ajax({
         url: 'image/' + id,

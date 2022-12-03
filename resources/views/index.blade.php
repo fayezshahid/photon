@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="icon" type="image/x-icon" href="photon.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/toastr.min.css">
@@ -19,6 +21,7 @@
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width:400px">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          <span style="color: white">{{ auth()->user()->id }}</span>
           <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button class="btn btn-outline-success">Logout</button>
@@ -62,6 +65,7 @@
 </body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery-3.6.1.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
 <script src="assets/js/toastr.min.js"></script>
 
 <script>

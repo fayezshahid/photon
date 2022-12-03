@@ -95,8 +95,8 @@
                         <div class="card">
                             <img class="card-img-top" height="320px" src="images/${data[i].image}">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                ${data[i].name ? '<h5 class="card-title">' + data[i].name + '</h5>' : ''}
+                                <div class="d-flex justify-content-between align-items-center">
+                                ${data[i].name ? '<h5 class="card-title" style="margin-bottom: 0">' + data[i].name + '</h5>' : ''}
                                 <a onclick="removeSharedImage(${user_id}, ${data[i].id})">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>

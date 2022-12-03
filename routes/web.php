@@ -12,6 +12,7 @@ use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\PairController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\ExploreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/arrangeSharedImages/{arrangeBy}/{order}', [ShareController::class, 'arrangeSharedImages']);
     Route::post('/removeSharedImage/{userId}/{imageId}', [ShareController::class, 'removeSharedImage']);
     Route::get('/ifImageShared/{userId}/{imageId}', [ShareController::class, 'ifImageShared']);
+
+    Route::get('/getImageByName/{name}', [ExploreController::class, 'getImageByName']);
+    Route::get('/getImageByDate/{date1}/{date2}', [ExploreController::class, 'getImageByDate']);
 
 });
 
