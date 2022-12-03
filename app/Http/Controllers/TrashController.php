@@ -42,6 +42,18 @@ class TrashController extends Controller
             else
                 return Image::where('inTrash', 1)->where('user_id', auth()->user()->id)->orderby('name', 'desc')->get();
         }
+        else if($arrangeBy == 'Size')
+        {
+            if(!$order)
+                return Image::where('inTrash', 1)->where('user_id', auth()->user()->id)->orderby('size')->get();
+            else
+                return Image::where('inTrash', 1)->where('user_id', auth()->user()->id)->orderby('size', 'desc')->get();
+        }
+    }
+
+    public function clear()
+    {
+        Image::where('inTrash', 1)->delete();
     }
 
 }

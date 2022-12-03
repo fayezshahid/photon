@@ -14,12 +14,9 @@
         </ul>
       </div>
       <div id="arrangByIcon" style="margin-left: 20px; margin-top: 5px; cursor: pointer;">
-        <div onclick="arrangeBy('date', 1)">
-          <i class="fa-solid fa-arrow-down" ></i> <b>date</b>
-        </div>
       </div>
     </div>
-    {{-- <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary" style="width: 100px">Upload</button> --}}
+    <button onclick="clearTrash()" class="btn btn-danger" style="width: 100px">Clear</button>
   </div>
   
   <div class="container mt-5">
@@ -57,12 +54,12 @@
         $('#row').html('');
         for(var i=0; i<data.length; i++){
           $('#row').append(`
-            <div class="col-md-4" style="margin-bottom: 15px;">
-              <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="images/${data[i].image}" alt="Card image cap">
+            <div class="col-auto" style="margin-bottom: 15px;">
+              <div class="card">
+                <img class="card-img-top" height="320px" src="images/${data[i].image}">
                 <div class="card-body">
                   <div class="d-flex justify-content-between">
-                    <h5 class="card-title">${data[i].name}</h5>
+                    ${data[i].name ? '<h5 class="card-title">' + data[i].name + '</h5>' : ''}
                   </div>
                   <div class="d-flex justify-content-between mt-3">
                     <a onclick="restoreImage(${data[i].id})">
@@ -104,6 +101,20 @@
         success: function(){
           toastr.success('Image Deleted');
           arrangeBy(arrange, order);
+        },
+        error: function(){
+          toastr.error('Error');
+        }
+      })
+    }
+
+    function clearTrash(){
+      $.ajax({
+        url: 'clear',
+        type: 'POST',
+        success: function(){
+          toastr.success('Trash Cleared');
+          $('#row').html('');
         },
         error: function(){
           toastr.error('Error');

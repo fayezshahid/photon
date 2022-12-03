@@ -17,13 +17,9 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max::255',
-            'image' => 'required'
-        ]);
-
-        $image = Storage::disk('image')->putFile('', $request->image);
-        $data['image'] = $image;
+        $data['name'] = $request->name;
+        $data['image'] = Storage::disk('image')->putFile('', $request->image);
+        $data['size'] = $request->image->getsize();
         $data['user_id'] = auth()->user()->id;
 
         Image::create($data);
@@ -31,26 +27,17 @@ class ImageController extends Controller
 
     public function update(Request $request, $imageId)
     {
-        if($request->hiddenToken == 1)
-        {
-            $data = $request->validate([
-                'name' => 'required|string|max:255',
-            ]);
-        }
-        else
-        {
-            $data = $request->validate([
-                'name' => 'required|string|max:255',
-                'image' => 'required',
-            ]);
+        $data['name'] = $request->name;
 
+        if($request->hiddenToken == 0)
+        {
             $image = Image::find($imageId);
-            Storage::disk('image')->delete($image->image);
+            Storage::disk('google')->delete($image->image);
 
-            $image = Storage::disk('image')->putFile('', $request->image);
-            $data['image'] = $image;
+            $data['image'] = Storage::disk('image')->putFile('', $request->image);
+            $data['size'] = getimagesize($request->image);
         }
-        
+
         $image = Image::find($imageId);
         $image->update($data);
     }
@@ -62,7 +49,7 @@ class ImageController extends Controller
         $image->save();
     }
 
-    function arrangeImages($arrangeBy, $order)
+    public function arrangeImages($arrangeBy, $order)
     {
         if($arrangeBy == 'Date')
         {
@@ -77,6 +64,13 @@ class ImageController extends Controller
                 return Image::where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('name')->get();
             else
                 return Image::where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('name', 'desc')->get();
+        }
+        else if($arrangeBy == 'Size')
+        {
+            if(!$order)
+                return Image::where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('size')->get();
+            else
+                return Image::where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('size', 'desc')->get();
         }
     }
 

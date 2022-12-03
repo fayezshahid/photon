@@ -42,6 +42,13 @@ class ArchiveController extends Controller
             else
                 return Image::where('isArchived', 1)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('name', 'desc')->get();
         }
+        else if($arrangeBy == 'Size')
+        {
+            if(!$order)
+                return Image::where('isArchived', 1)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('size')->get();
+            else
+                return Image::where('isArchived', 1)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('size', 'desc')->get();
+        }
     }
 
 }

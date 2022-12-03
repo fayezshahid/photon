@@ -2,11 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Models\User;
+
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\TrashController;
+use App\Http\Controllers\PairController;
+use App\Http\Controllers\ShareController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,13 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/explore', function(){
         return view('explore');
     })->name('explore');
-    Route::get('/sharing', function(){
-        return view('sharing');
-    })->name('sharing');
-
 
     Route::get('/', [ImageController::class, 'index'])->name('home');
-    Route::post('/image', [ImageController::class, 'store']);
+    Route::post('/image', [ImageController::class, 'store'])->name('image.store');
     Route::put('/image/{id}', [ImageController::class, 'update']);
     Route::post('/image/{id}', [ImageController::class, 'addToTrash']);
     Route::get('/arrangeImages/{arrangeBy}/{order}', [ImageController::class, 'arrangeImages']);
@@ -63,6 +64,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/restore/{id}', [TrashController::class, 'restore']);
     Route::delete('/delete/{id}', [TrashController::class, 'delete']);
     Route::get('/arrangeTrashImages/{arrangeBy}/{order}', [TrashController::class, 'arrangeTrashImages']);
+    Route::post('/clear', [TrashController::class, 'clear']);
+
+    Route::get('/sharing', [PairController::class, 'index'])->name('sharing');
+    Route::get('/getUsers', [PairController::class, 'getUsers']);
+    Route::get('/getFriends', [PairController::class, 'getFriends']);
+    Route::get('/getRequests', [PairController::class, 'getRequests']);
+    Route::get('/getRequestsSent', [PairController::class, 'getRequestsSent']);
+    Route::get('/getEmail/{email}/{mode}', [PairController::class, 'getEmail']);
+    Route::post('/sendRequest/{id}', [PairController::class, 'sendRequest']);
+    Route::post('/deleteRequest/{id}', [PairController::class, 'deleteRequest']);
+    Route::post('/acceptRequest/{id}', [PairController::class, 'acceptRequest']);
+    Route::post('/rejectRequest/{id}', [PairController::class, 'rejectRequest']);
+    Route::post('/removeFriend/{id}', [PairController::class, 'removeFriend']);
+
+    Route::post('/share/{userId}/{imageId}', [ShareController::class, 'share']);
+    Route::post('/unshare/{userId}/{imageId}', [ShareController::class, 'unshare']);
+    Route::get('/arrangeSharedImages/{arrangeBy}/{order}', [ShareController::class, 'arrangeSharedImages']);
+    Route::post('/removeSharedImage/{userId}/{imageId}', [ShareController::class, 'removeSharedImage']);
+    Route::get('/ifImageShared/{userId}/{imageId}', [ShareController::class, 'ifImageShared']);
 
 });
 

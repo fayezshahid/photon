@@ -42,5 +42,12 @@ class FavouriteController extends Controller
             else
                 return Image::where('isFavourite', 1)->where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('name', 'desc')->get();
         }
+        else if($arrangeBy == 'Size')
+        {
+            if(!$order)
+                return Image::where('isFavourite', 1)->where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('size')->get();
+            else
+                return Image::where('isFavourite', 1)->where('isArchived', 0)->where('inTrash', 0)->where('user_id', auth()->user()->id)->orderby('size', 'desc')->get();
+        }
     }
 }

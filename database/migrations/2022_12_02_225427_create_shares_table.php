@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('shares', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('image');
-            $table->string('size');
-            $table->integer('user_id');
-            $table->boolean('isArchived')->default(0);
-            $table->boolean('isFavourite')->default(0);
-            $table->boolean('inTrash')->default(0);
+            $table->integer('image_id');
+            $table->integer('owner_id');
+            $table->integer('viewer_id');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('shares');
     }
 };
