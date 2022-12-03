@@ -15,18 +15,20 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-dark fixed-top mb-3">
-        <div class="container-fluid">
-          <a class="navbar-brand" style="color:white;">PHOTON</a>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width:400px">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-          <span style="color: white">{{ auth()->user()->id }}</span>
-          <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button class="btn btn-outline-success">Logout</button>
-          </form>
+      <div class="container-fluid">
+        <a href="{{ route('home') }}" class="navbar-brand" style="color:white;">PHOTON</a>
+        <div class="dropdown">
+          <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            {{ auth()->user()->email }}
+          </button>
+          <div class="dropdown-menu">
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <a class="btn" onclick="this.parentNode.submit()">Logout</a>
+            </form>
+          </div>
         </div>
+      </div>
     </nav>
     <hr style="width: 100%;margin-top:0% ; margin-bottom:0%">
     <div class="d-flex flex-row" style="margin-top:0 ;">

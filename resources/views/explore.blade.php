@@ -7,8 +7,8 @@
             Search by
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li><button class="dropdown-item" onclick="searchBy('name')" type="button">Name</button></li>
-            <li><button class="dropdown-item" onclick="searchBy('date')" type="button">Date</button></li>
+            <li><button class="dropdown-item" onclick="searchBy('Name')" type="button">Name</button></li>
+            <li><button class="dropdown-item" onclick="searchBy('Date')" type="button">Date</button></li>
         </ul>
     </div>
     <div id="searchByName" style="width: 300px;" class="input-group input-group-sm">
@@ -131,6 +131,7 @@
     }
 
     function searchBy(s){
+        $('#dropdownMenu2').html(s);
         if(s == 'name'){
             $('#searchByName').show();
             $('#searchByDate').hide()
