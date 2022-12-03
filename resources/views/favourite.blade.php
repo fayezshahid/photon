@@ -200,6 +200,7 @@
           data:  new FormData(form),
           success: function(){
             closeImage(id);
+            flag = 0;
             $('#name' + id).val('');
             if(id)
               toastr.success('Image Edited');

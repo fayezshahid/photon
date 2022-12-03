@@ -201,9 +201,9 @@
     function upload(id){
       var f = 1;
                 
-      if(!$('#image' + id).val() || flag == 1){
+      if(!$('#image' + id).val() && flag == 1){
           f = 0;
-          $('#imageError' + id).html('Image is required');
+          $('#imageError' + id).html('Image is required');console.log(1);
       }
       else{
           $('#imageError' + id).html('');
@@ -231,6 +231,7 @@
           data:  new FormData(form),
           success: function(){
             closeImage(id);
+            flag = 0;
             $('#name' + id).val('');
             if(id)
               toastr.success('Image Edited');
