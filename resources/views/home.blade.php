@@ -16,7 +16,7 @@
       <div id="arrangByIcon" style="margin-left: 20px; margin-top: 5px; cursor: pointer;">
       </div>
     </div>
-    <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary" style="width: 100px">Upload</button>
+    <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-outline-primary" style="width: 100px">Upload</button>
   </div>
 
   <div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

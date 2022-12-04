@@ -11,9 +11,9 @@
             <li><button class="dropdown-item" onclick="searchBy('Date')" type="button">Date</button></li>
         </ul>
     </div>
-    <div id="searchByName" style="width: 300px;" class="input-group input-group-sm">
+    <div id="searchByName" style="width: 300px; display: none;" class="input-group input-group-sm">
         <input type="text" id="name" class="form-control">
-        <button onclick="searchImage('name')" class="btn btn-sm btn-secondary" style="width: 75px">
+        <button onclick="searchImage('Name')" class="btn btn-sm btn-secondary" style="width: 75px">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
     </div>
@@ -22,7 +22,7 @@
             <input type="text" id="datepicker1" style="width: 100px">
             <span style="padding: 0 10px">From</span>
             <input type="text" id="datepicker2" style="width: 100px">
-            <button onclick="searchImage('date')" class="btn btn-sm btn-secondary" style="margin-left: 25px; width: 75px">
+            <button onclick="searchImage('Date')" class="btn btn-sm btn-secondary" style="margin-left: 25px; width: 75px">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </div>
@@ -132,7 +132,7 @@
 
     function searchBy(s){
         $('#dropdownMenu2').html(s);
-        if(s == 'name'){
+        if(s == 'Name'){
             $('#searchByName').show();
             $('#searchByDate').hide()
         }
@@ -143,7 +143,7 @@
     }
 
     function searchImage(s){
-        if(s == 'name'){
+        if(s == 'Name'){
             var name = $('#name').val();
             $.get('getImageByName/' + name, function(data){
                 displayImages(data);
