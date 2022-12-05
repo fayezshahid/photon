@@ -55,7 +55,7 @@
         for(var i=0; i<data.length; i++){
           $('#row').append(`
             <div class="col-auto" style="margin-bottom: 15px;">
-              <div class="card">
+              <div class="card" style="height: 418px">
                 <img class="card-img-top" height="320px" src="images/${data[i].image}">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">

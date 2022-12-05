@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Album extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'image',
         'size',
         'user_id'
     ];
@@ -21,9 +20,8 @@ class Image extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function albums()
+    public function images()
     {
-        return $this->belongsToMany(Album::class);
+        return $this->belongsToMany(Image::class);
     }
-
 }

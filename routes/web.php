@@ -13,6 +13,7 @@ use App\Http\Controllers\TrashController;
 use App\Http\Controllers\PairController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\ExploreController;
+use App\Http\Controllers\AlbumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,19 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/getImageByName/{name}', [ExploreController::class, 'getImageByName']);
     Route::get('/getImageByDate/{date1}/{date2}', [ExploreController::class, 'getImageByDate']);
+
+    Route::get('/album', [AlbumController::class, 'index'])->name('album');
+    Route::post('/album', [AlbumController::class, 'create']);
+    Route::put('/album/{id}', [AlbumController::class, 'update']);
+    Route::delete('/delete/{id}', [AlbumController::class, 'delete']);
+    Route::get('/arrangeAlbums/{arrangeBy}/{order}', [AlbumController::class, 'arrangeAlbums']);
+    Route::get('/getAlbumImages/{albumId}/{arrangeBy}/{order}', [AlbumController::class, 'getAlbumImages']);
+
+    Route::get('/getAlbums', [AlbumController::class, 'getAlbums']);
+    Route::post('/addToAlbum/{albumId}/{imageId}', [AlbumController::class, 'addToAlbum']);
+    Route::post('/removeFromAlbum/{albumId}/{imageId}', [AlbumController::class, 'removeFromAlbum']);
+    Route::get('/getAlbumName/{name}', [AlbumController::class, 'getAlbumName']);
+    Route::get('/ifInAlbum/{albumId}/{imageId}', [AlbumController::class, 'ifInAlbum']);
 
 });
 

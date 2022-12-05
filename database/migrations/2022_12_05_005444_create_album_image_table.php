@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('album_image', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('image');
-            $table->bigInteger('size');
-            $table->integer('user_id');
-            $table->boolean('isArchived')->default(0);
-            $table->boolean('isFavourite')->default(0);
-            $table->boolean('inTrash')->default(0);
+            $table->integer('image_id');
+            $table->integer('album_id');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('album_image');
     }
 };

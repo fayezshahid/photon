@@ -34,6 +34,23 @@
         </div>
     </div>
   </div>
+
+  <div class="modal" id="albumModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+              <div class="input-group">
+                <input type="search" id="albumSearch" class="form-control" onsearch="cancelAlbumSearch()">
+                <button type="button" onclick="searchAlbum()" class="btn btn-secondary">
+                    <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <div class="mt-3" id="albums" style="padding: 0 30px;">
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
   
   <div class="container mt-5">
     <div class="row mb-5" id="row">
@@ -76,6 +93,9 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     ${data[i].name ? '<h5 class="card-title" style="margin-bottom: 0">' + data[i].name + '</h5>' : ''}
+                    <a onclick="album(${data[i].id})">
+                      <i class="fa-solid fa-plus"></i>
+                    </a>
                     <a data-bs-toggle="modal" data-bs-target="#modal${data[i].id}">
                         <i class="fa-solid fa-pencil"></i>
                     </a>
@@ -112,13 +132,13 @@
                                   <input type="file" id="image${data[i].id}" class="form-control" name="image" onchange="displayImage(${data[i].id}, this)">
                                   <div class="text-danger" id="imageError${data[i].id}"></div>
                               </div>
-                              <div class="d-flex justify-content-between" id="imageDiv${data[i].id}">
+                              <div class="d-flex justify-content-between" id="imageDiv${data[i].id}" style="margin-bottom: 1.5rem;">
                                   <img height="450" id="img${data[i].id}" src="images/${data[i].image}" alt="">
                                   <span id="close${data[i].id}" onclick="closeImage(${data[i].id})" style="cursor: pointer; height: 5px; margin-left: 30px">x</span>
                               </div>
                               <div class="form-group" style="">
                                   <label for="">Name</label>
-                                  <input type="text" id="name${data[i].id}" class="form-control" name="name" value="${data[i].name}" placeholder="Enter a small description">
+                                  <input type="text" id="name${data[i].id}" class="form-control" name="name" value="${data[i].name ? data[i].name : ''}" placeholder="Enter a small description">
                               </div>
                             </form>
                           </div>
@@ -170,7 +190,7 @@
     function upload(id){
       var f = 1;
                 
-      if(!$('#image' + id).val() || flag == 1){
+      if(!$('#image' + id).val() && flag == 1){
           f = 0;
           $('#imageError' + id).html('Image is required');
       }
@@ -278,10 +298,11 @@
       })
     }
 
-    var friends, imgId;
+    var imgId;
 
     function share(id){
       imgId = id;
+      $('#emailSearch').val('');
       $('#friends').html('');
       $.get('getFriends', function(data){
         output = '';
@@ -304,7 +325,6 @@
           `;
         }
         $('#friends').html(output);
-        friends = output;
       });
       $('#shareModal').modal('show');
     }
@@ -338,10 +358,24 @@
 
     function search(){
       var email = $('#emailSearch').val();
-
+      var c = '';
       $.get('getEmail/' + email + '/1', function(data){
         if(data.length > 0){
-          share(imgId);
+          $.ajax({
+            url: 'ifImageShared/' + data[0].id + '/' + imgId,
+            type: 'GET',
+            async: false,
+            success: function(res){
+              if(res)
+                c = 'checked'
+            },
+          });
+          $("#friends").html(`
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="">${data[0].email}</div>
+                <input class="form-check-input" type="checkbox" onclick="shareWithFriend(this, ${data[0].id}, ${imgId})" ${c}>
+            </div>
+          `);
         }
         else{
           $("#friends").html(`
@@ -350,11 +384,107 @@
             </div>
           `);
         }
-      })
+      });
     }
 
     function cancel(){
-        $('#friends').html(friends)
+      share(imgId);
+    }
+
+    var albumImgId;
+
+    function album(id){
+      albumImgId = id;
+      $('#albumSearch').val('');
+      $('#albums').html('');
+      $.get('getAlbums', function(data){
+        output = '';
+        for(var i=0; i<data.length; i++){
+          var c = ''
+          $.ajax({
+            url: 'ifInAlbum/' + data[i].id + '/' + id,
+            type: 'GET',
+            async: false,
+            success: function(res){
+              if(res)
+                c = 'checked'
+            },
+          });
+          output += `
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="">${data[i].name}</div>
+                <input class="form-check-input" type="checkbox" onclick="addToAlbum(this, ${data[i].id}, ${id})" ${c}>
+            </div>
+          `;
+        }
+        $('#albums').html(output);
+      });
+      $('#albumModal').modal('show');
+    }
+
+    function addToAlbum(checkbox, albumId, imageId){
+      if(checkbox.checked){
+        $.ajax({
+          url: 'addToAlbum/' + albumId + '/' + imageId,
+          type: 'POST',
+          success: function(album){
+            toastr.success('Added image to ' + album + ' folder');
+          },
+          error: function(){
+            toastr.error('Error');
+          },
+        });
+      }
+      else{
+        $.ajax({
+          url: 'removeFromAlbum/' + albumId + '/' + imageId,
+          type: 'POST',
+          success: function(album){
+            toastr.success('Removed image from ' + album + ' folder');
+          },
+          error: function(){
+            toastr.error('Error');
+          },
+        });
+      }
+    }
+    
+    function searchAlbum(){
+      var album = $('#albumSearch').val();
+      var c =''
+      $.get('getAlbumName/' + album, function(data){
+        $('#albums').html('');
+        if(data.length > 0){
+          for(var i=0; i<data.length; i++){
+            $.ajax({
+              url: 'ifInAlbum/' + data[i].id + '/' + albumImgId,
+              type: 'GET',
+              async: false,
+              success: function(res){
+                if(res)
+                  c = 'checked'
+              },
+            });
+            $("#albums").append(`
+              <div class="d-flex justify-content-between align-items-center">
+                  <div class="">${data[i].name}</div>
+                  <input class="form-check-input" type="checkbox" onclick="addToAlbum(this, ${data[i].id}, ${imgId})" ${c}>
+              </div>
+            `);
+          }
+        }
+        else{
+          $("#albums").html(`
+            <div class="alert alert-danger" style="height: 25px; font-size: 14px; text-align: center; padding: 0;">
+              No Result Found. Enter an existing email.
+            </div>
+          `);
+        }
+      })
+    }
+
+    function cancelAlbumSearch(){
+      album(albumImgId);
     }
 
   </script>

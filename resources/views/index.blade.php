@@ -52,6 +52,9 @@
                 <a class="nav-link nav-bar-side" href="{{ route('favourite') }}"><i class='fa fa-star px-2 nav-bar-side'></i>Favourite</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link nav-bar-side" href="{{ route('album') }}"><i class="fa-solid fa-images px-2 nav-bar-side"></i>Album</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link nav-bar-side" href="{{ route('trash') }}"><i class='fa fa-trash px-2 nav-bar-side'></i>Trash</a>
               </li>
             </ul>
