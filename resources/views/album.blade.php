@@ -156,7 +156,7 @@
     function deleteAlbum(id){
         var form = document.getElementById('deleteForm' + id);
         $.ajax({
-            url: 'delete/' + id,
+            url: 'album/' + id,
             type: 'POST',
             processData: false,
             contentType: false,

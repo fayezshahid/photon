@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/album', [AlbumController::class, 'index'])->name('album');
     Route::post('/album', [AlbumController::class, 'create']);
     Route::put('/album/{id}', [AlbumController::class, 'update']);
-    Route::delete('/delete/{id}', [AlbumController::class, 'delete']);
+    Route::delete('/album/{id}', [AlbumController::class, 'delete']);
     Route::get('/arrangeAlbums/{arrangeBy}/{order}', [AlbumController::class, 'arrangeAlbums']);
     Route::get('/getAlbumImages/{albumId}/{arrangeBy}/{order}', [AlbumController::class, 'getAlbumImages']);
 
