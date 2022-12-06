@@ -54,7 +54,11 @@ class TrashController extends Controller
 
     public function clear()
     {
-        Image::where('inTrash', 1)->delete();
+        $images = Image::where('inTrash', 1)->pluck('id')->toArray();
+        foreach($images as $image)
+        {
+            $this->delete($image);
+        }
     }
 
 }

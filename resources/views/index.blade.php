@@ -46,7 +46,7 @@
                 <a class="nav-link nav-bar-side" href="{{ route('sharing') }}"><i class="fa-solid fa-users px-2 nav-bar-side"></i>Sharing</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link nav-bar-side" href="{{ route('archive') }}"><i class='fa fa-box-archive px-2 nav-bar-side'></i>Archieved</a>
+                <a class="nav-link nav-bar-side" href="{{ route('archive') }}"><i class='fa fa-box-archive px-2 nav-bar-side'></i>Archived</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link nav-bar-side" href="{{ route('favourite') }}"><i class='fa fa-star px-2 nav-bar-side'></i>Favourite</a>
