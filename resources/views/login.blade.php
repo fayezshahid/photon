@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <title>PHOTON</title>
 </head>
-<body class="bg-light">
+<body class="bg-light" style="background-image: url('background.jpeg'); background-repeat: no-repeat; background-size: cover;">
     <div class="container align-items-center">
         <div class="row mt-5">
             <div class="col-lg-4 bg-white m-auto rounded-top wrapper">
-                <h2 class="text-center pt-3">LOGIN</h2>
+                <h2 class="text-center pt-3">Login</h2>
                 <p class="text-center text-muted lead">Hello from the other side</p>
                 <form action ="{{ route('login') }}" method="POST">
                     @csrf

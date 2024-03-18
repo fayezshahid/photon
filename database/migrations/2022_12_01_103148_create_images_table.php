@@ -18,11 +18,12 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('image');
             $table->bigInteger('size');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->boolean('isArchived')->default(0);
             $table->boolean('isFavourite')->default(0);
             $table->boolean('inTrash')->default(0);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

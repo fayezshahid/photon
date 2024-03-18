@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('album_image', function (Blueprint $table) {
             $table->id();
-            $table->integer('image_id');
-            $table->integer('album_id');
+            $table->unsignedBigInteger('image_id');
+            $table->unsignedBigInteger('album_id');
             $table->timestamps();
+            $table->foreign('image_id')->references('id')->on('images');
+            $table->foreign('album_id')->references('id')->on('albums');
         });
     }
 

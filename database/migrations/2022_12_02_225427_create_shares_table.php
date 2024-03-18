@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('shares', function (Blueprint $table) {
             $table->id();
-            $table->integer('image_id');
-            $table->integer('owner_id');
-            $table->integer('viewer_id');
+            $table->unsignedBigInteger('image_id');
+            $table->unsignedBigInteger('owner_id');
+            $table->unsignedBigInteger('viewer_id');
             $table->timestamps();
+            $table->foreign('image_id')->references('id')->on('images');
+            $table->foreign('owner_id')->references('id')->on('users');
+            $table->foreign('viewer_id')->references('id')->on('users');
         });
     }
 

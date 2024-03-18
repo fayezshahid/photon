@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <title>PHOTON</title>
 </head>
-<body class="bg-light align-items-center">
+<body class="bg-light align-items-center" style="background-image: url('background.jpeg'); background-repeat: no-repeat; background-size: cover;">
     <div class="container">
         <div class="row mt-5">
             <div class="col-lg-4 bg-white m-auto rounded-top wrapper">
