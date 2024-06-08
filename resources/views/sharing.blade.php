@@ -24,7 +24,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="input-group">
-                    <input type="search" id="emailSearch" class="form-control" onsearch="cancel()">
+                    <input type="search" id="emailSearch" class="form-control" onkeyup="if (this.value.trim() !== '') search(); else cancel()">
                     <button type="button" onclick="search()" class="btn btn-secondary">
                         <i class="fas fa-search"></i>
                     </button>

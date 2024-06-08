@@ -44,8 +44,14 @@ class PairController extends Controller
 
     public function getEmail($email, $mode)
     {
+        $query = User::query()->where(function($query) use ($email) {
+            $query->where('email', 'LIKE', '%'.$email)
+                  ->orWhere('email', 'LIKE', '%'.$email.'%')
+                  ->orWhere('email', 'LIKE', $email.'%');
+        });
+        
         if($mode == 3)
-            return User::where('id', $email)->get();
+            return $query->get();  
 
         $list1 = Pair::where('sender_id', auth()->user()->id)->where('isAccepted', 1)->pluck('receiver_id')->toArray();
         $list2a = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 1)->pluck('sender_id')->toArray();
@@ -56,11 +62,13 @@ class PairController extends Controller
         $list5 = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 0)->pluck('sender_id')->toArray();
 
         if($mode == 0)
-            return User::whereNotIn('id', $list3)->where('email', $email)->get();
+            $query->whereNotIn('id', $list3);
         if($mode == 1)
-            return User::whereIn('id', $list4)->where('email', $email)->get();
+            $query->whereIn('id', $list4);    
         if($mode == 2)
-            return User::whereIn('id', $list5)->where('email', $email)->get();
+            $query->whereIn('id', $list5);
+
+        return $query->get();
     }
 
     public function sendRequest($id)
