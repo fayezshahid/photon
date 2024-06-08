@@ -44,14 +44,14 @@ class PairController extends Controller
 
     public function getEmail($email, $mode)
     {
+        if($mode == 3)
+            return User::where('id', $email)->get();  
+
         $query = User::query()->where(function($query) use ($email) {
             $query->where('email', 'LIKE', '%'.$email)
                   ->orWhere('email', 'LIKE', '%'.$email.'%')
                   ->orWhere('email', 'LIKE', $email.'%');
         });
-        
-        if($mode == 3)
-            return $query->get();  
 
         $list1 = Pair::where('sender_id', auth()->user()->id)->where('isAccepted', 1)->pluck('receiver_id')->toArray();
         $list2a = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 1)->pluck('sender_id')->toArray();
