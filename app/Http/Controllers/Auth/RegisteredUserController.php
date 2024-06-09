@@ -53,4 +53,9 @@ class RegisteredUserController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+    public function getUserInfo($userId)
+    {
+        return User::where('id', $userId)->get();
+    }
 }

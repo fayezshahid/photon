@@ -42,34 +42,34 @@ class PairController extends Controller
         return Pair::where('sender_id', auth()->user()->id)->where('isAccepted', 0)->pluck('receiver_id')->toArray();
     }
 
-    public function getEmail($email, $mode)
-    {
-        if($mode == 3)
-            return User::where('id', $email)->get();  
+    // public function getEmail($email, $mode)
+    // {
+    //     if($mode == 3)
+    //         return User::where('id', $email)->get();  
 
-        $query = User::query()->where(function($query) use ($email) {
-            $query->where('email', 'LIKE', '%'.$email)
-                  ->orWhere('email', 'LIKE', '%'.$email.'%')
-                  ->orWhere('email', 'LIKE', $email.'%');
-        });
+    //     $query = User::query()->where(function($query) use ($email) {
+    //         $query->where('email', 'LIKE', '%'.$email)
+    //               ->orWhere('email', 'LIKE', '%'.$email.'%')
+    //               ->orWhere('email', 'LIKE', $email.'%');
+    //     });
 
-        $list1 = Pair::where('sender_id', auth()->user()->id)->where('isAccepted', 1)->pluck('receiver_id')->toArray();
-        $list2a = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 1)->pluck('sender_id')->toArray();
-        $list2b = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 0)->pluck('sender_id')->toArray();
-        $list3 = array_merge($list1, $list2a, $list2b);
-        $list4 = array_merge($list1, $list2a);
-        array_push($list3, auth()->user()->id);
-        $list5 = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 0)->pluck('sender_id')->toArray();
+    //     $list1 = Pair::where('sender_id', auth()->user()->id)->where('isAccepted', 1)->pluck('receiver_id')->toArray();
+    //     $list2a = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 1)->pluck('sender_id')->toArray();
+    //     $list2b = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 0)->pluck('sender_id')->toArray();
+    //     $list3 = array_merge($list1, $list2a, $list2b);
+    //     $list4 = array_merge($list1, $list2a);
+    //     array_push($list3, auth()->user()->id);
+    //     $list5 = Pair::where('receiver_id', auth()->user()->id)->where('isAccepted', 0)->pluck('sender_id')->toArray();
 
-        if($mode == 0)
-            $query->whereNotIn('id', $list3);
-        if($mode == 1)
-            $query->whereIn('id', $list4);    
-        if($mode == 2)
-            $query->whereIn('id', $list5);
+    //     if($mode == 0)
+    //         $query->whereNotIn('id', $list3);
+    //     if($mode == 1)
+    //         $query->whereIn('id', $list4);    
+    //     if($mode == 2)
+    //         $query->whereIn('id', $list5);
 
-        return $query->get();
-    }
+    //     return $query->get();
+    // }
 
     public function sendRequest($id)
     {

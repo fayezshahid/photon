@@ -54,13 +54,12 @@
         <div class="modal-content">
             <div class="modal-body">
               <div class="input-group">
-                <input type="search" id="emailSearch" class="form-control" onkeyup="if (this.value.trim() !== '') search(); else cancel()">
-                <button type="button" onclick="search()" class="btn btn-secondary">
+                <input type="search" id="emailSearch" class="form-control" onkeyup="search(this.value)">
+                <!-- <button type="button" onclick="search()" class="btn btn-secondary">
                     <i class="fas fa-search"></i>
-                </button>
+                </button> -->
               </div>
-              <div class="mt-3" id="friends" style="padding: 0 30px;">
-              </div>
+              <div class="mt-3" id="friends" style="padding: 0 30px;"></div>
             </div>
         </div>
     </div>
@@ -71,10 +70,7 @@
         <div class="modal-content">
             <div class="modal-body">
               <div class="input-group">
-                <input type="search" id="albumSearch" class="form-control" onsearch="cancelAlbumSearch()">
-                <button type="button" onclick="searchAlbum()" class="btn btn-secondary">
-                    <i class="fas fa-search"></i>
-                </button>
+                <input type="search" id="albumSearch" class="form-control" onkeyup="searchAlbum(this.value)">
               </div>
               <div class="mt-3" id="albums" style="padding: 0 30px;">
               </div>
@@ -377,40 +373,23 @@
       }
     }
 
-    function search(){
-      var email = $('#emailSearch').val();
-      var c = '';
-      $.get('getEmail/' + email + '/1', function(data){
-        if(data.length > 0){
-          $.ajax({
-            url: 'ifImageShared/' + data[0].id + '/' + imgId,
-            type: 'GET',
-            async: false,
-            success: function(res){
-              if(res)
-                c = 'checked'
-            },
-          });
-          $("#friends").html(`
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="">${data[0].email}</div>
-                <input class="form-check-input" type="checkbox" onclick="shareWithFriend(this, ${data[0].id}, ${imgId})" ${c}>
-            </div>
-          `);
+    function search(value){
+      value = value.toLowerCase();
+      $('#friends > div').each(function() {
+        const user = $(this).text().trim().toLowerCase();
+        // console.log(user);
+        if (user.includes(value)) {
+          $(this).show();  // Show the conversation if it matches the search
+        } else {          
+          $(this).attr('style', 'display: none !important');  // Hide the conversation if it doesn't match the search
+          console.log(this);
         }
-        else{
-          $("#friends").html(`
-            <div class="alert alert-danger" style="height: 25px; font-size: 14px; text-align: center; padding: 0;">
-              No Result Found. Enter an existing email.
-            </div>
-          `);
-        }
-      })
+      });
     }
 
-    function cancel(){
-        share(imgId);
-    }
+    // function cancel(){
+    //     share(imgId);
+    // }
 
 
     var albumImgId;
@@ -471,42 +450,18 @@
       }
     }
     
-    function searchAlbum(){
-      var album = $('#albumSearch').val();
-      var c =''
-      $.get('getAlbumName/' + album, function(data){
-        $('#albums').html('');
-        if(data.length > 0){
-          for(var i=0; i<data.length; i++){
-            $.ajax({
-              url: 'ifInAlbum/' + data[i].id + '/' + albumImgId,
-              type: 'GET',
-              async: false,
-              success: function(res){
-                if(res)
-                  c = 'checked'
-              },
-            });
-            $("#albums").append(`
-              <div class="d-flex justify-content-between align-items-center">
-                  <div class="">${data[i].name}</div>
-                  <input class="form-check-input" type="checkbox" onclick="addToAlbum(this, ${data[i].id}, ${imgId})" ${c}>
-              </div>
-            `);
-          }
+    function searchAlbum(value){
+      value = value.toLowerCase();
+      $('#albums > div').each(function() {
+        const album = $(this).text().trim().toLowerCase();
+        // console.log(user);
+        if (album.includes(value)) {
+          $(this).show();  // Show the conversation if it matches the search
+        } else {          
+          $(this).attr('style', 'display: none !important');  // Hide the conversation if it doesn't match the search
+          // console.log(this);
         }
-        else{
-          $("#albums").html(`
-            <div class="alert alert-danger" style="height: 25px; font-size: 14px; text-align: center; padding: 0;">
-              No Result Found. Enter an existing email.
-            </div>
-          `);
-        }
-      })
-    }
-
-    function cancelAlbumSearch(){
-      album(albumImgId);
+      });
     }
 
   </script>

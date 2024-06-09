@@ -24,10 +24,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="input-group">
-                    <input type="search" id="emailSearch" class="form-control" onkeyup="if (this.value.trim() !== '') search(); else cancel()">
-                    <button type="button" onclick="search()" class="btn btn-secondary">
-                        <i class="fas fa-search"></i>
-                    </button>
+                    <input type="search" id="emailSearch" class="form-control" onkeyup="search(this.value)">
                 </div>
                 <nav class="nav nav-pills nav-fill mt-3">
                     <a class="nav-link active" id="usersTab" onclick="seeUsers()" style="height: 23px; padding: 0; font-size: 14px; cursor: pointer">Send Request</a>
@@ -82,7 +79,7 @@
             for(var i=0; i<data.length; i++){
                 var email, user_id;
                 $.ajax({
-                    url: 'getEmail/' + data[i].user_id + '/3',
+                    url: 'getUserInfo/' + data[i].user_id,
                     type: 'GET',
                     async: false,
                     success: function(d){
@@ -112,7 +109,6 @@
         })
     }
 
-    var arr = [];
     var users;
     var friends;
     var requests;
@@ -193,69 +189,30 @@
         });
     }
 
-    function search(){
-        var email = $('#emailSearch').val();
+    function search(value){
         var mode;
 
         if($('#usersTab').hasClass('active')){
-            mode = 0;
-            arr = ['users', users]
+            mode = 'users';
         }
         else if($('#friendsTab').hasClass('active')){
-            mode = 1;
-            arr = ['friends', friends]
+            mode = 'friends';
         }
         else{
-            mode = 2;
-            arr = ['requests', requests]
+            mode = 'requests';
         }
 
-        $.get('getEmail/' + email + '/' + mode, function(data){
-            if(data.length > 0){
-                if($('#usersTab').hasClass('active')){
-                    $('#users').html(`
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="">${data[0].email}</div>
-                            <div>
-                                <button class="btn" onclick="sendRequest(${data[0].id})"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                        </div>
-                    `);
-                }
-                else if($('#friendsTab').hasClass('active')){
-                    $('#friends').html(`
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="">${data[0].email}</div>
-                            <div>
-                                <button class="btn" onclick="removeFriend(${data[0].id})"><i class="fa-solid fa-xmark"></i></button>
-                            </div>
-                        </div>
-                    `);
-                }
-                else{
-                    $('#requests').html(`
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="">${data[0].email}</div>
-                            <div>
-                                <button class="btn" onclick="rejectRequest(${data[0].id})"><i class="fa-solid fa-xmark"></i></button>
-                                <button class="btn" onclick="acceptRequest(${data[0].id})"><i class="fa-solid fa-check"></i></button>
-                            </div>
-                        </div>
-                    `);
-                }
+        value = value.toLowerCase();
+        $(`#${mode} > div`).each(function() {
+            const user = $(this).text().trim().toLowerCase();
+            // console.log(user);
+            if (user.includes(value)) {
+                $(this).show();  // Show the conversation if it matches the search
+            } else {          
+                $(this).attr('style', 'display: none !important');  // Hide the conversation if it doesn't match the search
+                console.log(this);
             }
-            else{
-                $("#"  + arr[0]).html(`
-                    <div class="alert alert-danger" style="height: 25px; font-size: 14px; text-align: center; padding: 0;">
-                        No Result Found. Enter an existing email.
-                    </div>
-                `);
-            }
-        })
-    }
-
-    function cancel(){
-        $('#' + arr[0]).html(arr[1])
+        });
     }
 
     function seeUsers(){

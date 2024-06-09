@@ -46,10 +46,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="input-group">
-                        <input type="search" id="emailSearch" class="form-control" onkeyup="if (this.value.trim() !== '') search(); else cancel()">
-                        <button type="button" onclick="search()" class="btn btn-secondary">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <input type="search" id="emailSearch" class="form-control" onkeyup="search(this.value)">
                     </div>
                     <div class="mt-3" id="friends" style="padding: 0 30px;">
                     </div>
@@ -530,48 +527,28 @@
       }
     }
 
-    function search(){
-        var email = $('#emailSearch').val();
-        var c = '';
-        $.get('getEmail/' + email + '/1', function(data){
-            if(data.length > 0){
-                $.ajax({
-                    url: 'ifImageShared/' + data[0].id + '/' + imgId,
-                    type: 'GET',
-                    async: false,
-                    success: function(res){
-                        if(res)
-                        c = 'checked'
-                    },
-                });
-                $("#friends").html(`
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="">${data[0].email}</div>
-                        <input class="form-check-input" type="checkbox" onclick="shareWithFriend(this, ${data[0].id}, ${imgId})" ${c}>
-                    </div>
-                `);
-            }
-            else{
-                $("#friends").html(`
-                    <div class="alert alert-danger" style="height: 25px; font-size: 14px; text-align: center; padding: 0;">
-                        No Result Found. Enter an existing email.
-                    </div>
-                `);
-            }
-        });
-    }
-
-    function cancel(){
-        share(imgId);
+    function search(value){
+      value = value.toLowerCase();
+      $('#friends > div').each(function() {
+        const user = $(this).text().trim().toLowerCase();
+        // console.log(user);
+        if (user.includes(value)) {
+          $(this).show();  // Show the conversation if it matches the search
+        } else {          
+          $(this).attr('style', 'display: none !important');  // Hide the conversation if it doesn't match the search
+          console.log(this);
+        }
+      });
     }
 
     function removeFromAlbum(albumId, imageId){
+        // console.log(albumId);
         $.ajax({
             url: 'removeFromAlbum/' + albumId + '/' + imageId,
             type: 'POST',
             success: function(album){
                 toastr.success('Removed image from ' + album + ' folder');
-                openFolder(album, arrange2, order2);
+                openFolder(albumId, arrange2, order2);
             },
             error: function(){
                 toastr.error('Error');
