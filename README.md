@@ -85,7 +85,7 @@ Photon, a robust photo management platform built with PHP Laravel and MySQL. Fea
 ## 📁 Project Structure
 
 ```
-photo-management-platform/
+photon/
 │
 ├── app/                    # Laravel application logic
 ├── database/              # Migrations and seeders
