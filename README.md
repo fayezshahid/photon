@@ -1,4 +1,4 @@
-# Photo Management Platform
+# Photo Management System
 
 Photon, a robust photo management platform built with PHP Laravel and MySQL. Features dynamic client-side interactions for favoriting, archiving, and sharing photos without page reloads.
 
